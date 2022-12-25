@@ -1,0 +1,28 @@
+﻿@model Products
+
+<form class="p-4 shadow bg-body rounded" method="post" enctype="multipart/form-data">
+
+    <h1 class="display-4">Изменение данных</h1>
+
+    <div class="form-group">
+        <label>Название</label>
+        <input class="form-control" name="Name" value="@Model.Name">
+    </div>
+
+    <div class="form-group">
+        <label>Описание</label>
+        <input class="form-control" name="Description" value="@Model.Description">
+    </div>
+
+    <div class="form-group">
+        <label>Цена</label>
+        <input class="form-control" name="Price" value="@Model.Price">
+    </div>
+
+    <div class="mb-3">
+        <input type="file" class="form-control" name="files" required>
+        <div class="invalid-feedback">Загрузите изображение товара...</div>
+    </div>
+
+    <input type="submit" class="btn btn-outline-success w-100">
+</form>

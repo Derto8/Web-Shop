@@ -1,0 +1,47 @@
+﻿<form class="p-4 shadow bg-body rounded" method="post" enctype="multipart/form-data">
+
+    <h1 class="display-4">Регистрация</h1>
+
+    <div class="form-group">
+        <label>Логин</label>
+        <input class="form-control" name="Login" placeholder="Введите логин">
+        <small class="form-text text-muted">Длина логина не менее 5 символов, и не более 20 символов</small>
+    </div>
+
+    <div class="form-group">
+        <label>Пароль</label>
+        <input class="form-control" name="Password" type="password" placeholder="Введите пароль">
+        <small class="form-text text-muted">Длина пароля не менее 5 символов, и не более 20 символов</small>
+    </div>
+
+    <div class="form-group">
+        <label>Подтвердите пароль</label>
+        <input class="form-control" name="PasswordConfirm" type="password" placeholder="Подтвердите пароль">
+    </div>
+
+    <div class="form-group">
+        <label>Ф.И.О.</label>
+        <input class="form-control" name="FIO" placeholder="Введите Ф.И.О.">
+    </div>
+
+    <div class="form-group">
+        <label>Почта</label>
+        <input class="form-control" name="EMail" placeholder="Введите почту">
+    </div>
+
+    <div class="form-group">
+        <label>Телефон</label>
+        <input class="form-control" name="Phone" placeholder="Введите ваш номер">
+    </div>
+
+      <div class="mb-3">
+        <input type="file" class="form-control" name="files" required>
+        <div class="invalid-feedback">Загрузите ваше изображение...</div>
+      </div>
+
+    <p class="text-danger">@ViewBag.Error</p>
+
+    <input type="submit" class="btn btn-outline-success w-100">
+
+    <a class="nav-link" asp-controller="Authentication" asp-action="Authorization">Уже есть аккаунт?</a>
+</form>

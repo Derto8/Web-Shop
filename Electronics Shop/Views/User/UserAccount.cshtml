@@ -1,0 +1,38 @@
+﻿@model IEnumerable<Users>
+
+@{
+    foreach(var u in Model)
+    {
+    <div class="row shadow mb-5 bg-body rounded">
+                
+        <div class="col">
+            <img class="img-thumbnail mx-auto d-block rounded-circle" src="@u.Image" alt="Аватар отсутсвует" />
+        </div>
+
+        <div class="col m-2">
+            <p>Ваш логин: @u.Login</p>
+            <p>Ваше Ф.И.О.: @u.FIO</p>
+            <p>Ваша почта: @u.Email</p>
+            <p>Ваш номер телефона: @u.Phone</p>
+            @{
+                if (u.Status == "Adm") {
+                        <p class="text-danger">Ваш статус: Администратор</p>
+                    <div class="row m-2">
+                        <p><a class="btn btn-outline-success mr-3" asp-controller="User" asp-action="ExportExcel">Список покупок пользователей</a></p>
+                        <p><a class="btn btn-outline-primary mr-3" asp-controller="UsersList" asp-action="ListUsers">Пользователи</a></p>
+                        <p><a class="btn btn-outline-primary mr-3" asp-controller="User" asp-action="ChangeAdminSettings">Изменить собственные данные</a></p>
+                        <p><a class="btn btn-outline-danger mr-3" asp-controller="User" asp-action="ExitUser">Выйти из аккаунта</a></p>
+                    </div>
+                }
+                if(u.Status == "User"){
+                    <div class="row m-2">
+                        <p><a class="btn btn-outline-success mr-3" asp-controller="BuyProducts" asp-action="ViewUserProducts">Список ваших покупок</a></p>
+                        <p><a class="btn btn-outline-primary mr-3" asp-controller="User" asp-action="ChangeUserSettings">Изменить данные аккаунта</a></p>
+                        <p><a class="btn btn-outline-danger mr-3" asp-controller="User" asp-action="ExitUser">Выйти из аккаунта</a></p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    }
+}

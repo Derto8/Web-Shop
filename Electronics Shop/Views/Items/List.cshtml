@@ -1,0 +1,95 @@
+﻿@model IEnumerable<Products>
+
+    @{
+        if(Startup.StatusUser == "Adm"){
+            <p><a class="btn btn-success ml-2 widthForButton" asp-controller="Items" asp-action="AddItem">Добавить товар</a></p>
+        }
+    }
+<div class="row mt-3 mb-2">
+    @{
+        foreach (var product in Model)
+        {
+            <div class="col-lg-5 m-4 shadow mb-5 bg-body rounded">
+                <img class="img-thumbnail m-4 p-5" src="@product.Image" alt="Картинка отсутствует" />
+                <div class="ml-4 pr-4 mt-2 text-dark" name="main">
+                    <p>Название: @product.Name</p>
+                    <p>Описание: @product.Description</p>
+                    <p>Цена: @product.Price</p>
+                    @{
+                        if (Startup.StatusUser == "User")
+                        {
+                            <p name="addToCart"><a class="btn btn-outline-warning w-100" name="button" id="@product.Id">Добавить в корзину</a></p>
+                        }
+                        if (@Startup.StatusUser == "Adm")
+                        {
+                            <div class="m-3" name="needHide" id="@product.Id">
+                                <a class="btn btn-outline-success mb-5 mt-4 w-100">Редактирование</a>
+                            </div>
+                            <div class="needHideFirst m-3" name="needShow">
+                                <p name="ChangeItem"><a class="btn btn-warning w-100" name="button" asp-controller="Items" asp-action="ChangeProduct">Изменить товар</a></p>
+                                <p name="DeleteItem"><a class="btn btn-danger w-100" name="button" asp-controller="Items" asp-action="DeleteProduct">Удалить товар</a></p>
+                            </div>
+                        }
+                        if (@Startup.StatusUser == null)
+                        {
+                            <p><a class="btn btn-warning w-100 disabled">Нужно авторизироваться</a></p>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<p><a class="btn btn-lg btn-light container-fluid ml-2 widthForButton" data-bs-dismiss="modal" asp-area="" asp-controller="Home" asp-action="Index">На главную</a></p>
+
+<script>
+    $('div[name="main"]').children('p[name="addToCart"]').children('a[name="button"]').click(function () {
+
+        $("body").overhang({
+        type: "success",
+        message: "Товар был добавлен в корзину!"
+        });
+    
+        $.ajax({
+            url: '@Url.Action("ShopCart", "Items")',
+            contentType: "application/json; charset=utf-8",
+            data: { idProduct: $(this).attr('id') },
+            dataType: "json",
+            success: SuccessShopCart,
+            error: AjaxError
+        })
+
+    })
+
+    $('div[name="main"]').children('div[name="needHide"]').click(function () {
+
+        $.ajax({
+            url: '@Url.Action("GetIdProduct", "Items")',
+            contentType: "application/json; charset=utf-8",
+            data: { idProduct: $(this).attr('id') },
+            dataType: "json",
+            success: SuccessShopCart,
+            error: AjaxError
+        })
+
+        $('div[name="needHide"]').show();
+        $('div[name="needShow"]').hide();
+
+        $(this).parent().children('div[name="needShow"]').show();
+        $(this).hide();
+    })
+
+    function SuccessShopCart(data){
+        console.log(data);
+    }
+
+    function AjaxError(){
+        $("body").overhang({
+          type: "error",
+          message: "Что-то пошло не так...",
+          closeConfirm: true
+        });
+    }
+
+</script>

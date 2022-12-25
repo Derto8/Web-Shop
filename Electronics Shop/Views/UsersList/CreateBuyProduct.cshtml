@@ -1,0 +1,21 @@
+﻿<form class="p-4 shadow bg-body rounded" method="post" enctype="multipart/form-data">
+
+    <h1 class="display-4">Добавление продукта</h1>
+
+    <div class="form-group">
+        <label>Название продукта</label>
+        <input class="form-control" name="Name" placeholder="Введите название продукта">
+    </div>
+
+    <div class="form-group">
+        <label>Цена</label>
+        <input class="form-control" name="Price" placeholder="Введите цену на продукт">
+    </div>
+
+    <div class="mb-3">
+        <input type="file" class="form-control" name="files" required>
+        <div class="invalid-feedback">Загрузите изображение...</div>
+    </div>
+
+    <input type="submit" class="btn btn-outline-success w-100">
+</form>

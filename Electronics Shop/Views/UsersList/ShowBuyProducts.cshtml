@@ -1,0 +1,69 @@
+﻿@model IEnumerable<BuyProduct>
+
+@{
+    <p><a class="btn btn-success ml-2 w-100" asp-controller="UsersList" asp-action="CreateBuyProduct">Добавить продукт</a></p>
+
+    if(Model.Count() == 0){
+        <h1 class="text-secondary display-5 m-2">У пользователя нету покупок</h1>
+    }
+    else{
+        foreach (var u in Model)
+        {
+            <div class="row shadow mb-4 bg-body rounded" name="main">
+                <div class="col-lg-2">
+                    <img class="img-thumbnail m-3" src="@u.Image" alt="Изображение отсутсвует" />
+                </div>
+
+                <div class="col m-3" name="divSecond">
+                    <p>Логин покупателя: @u.Users.Login</p>
+                    <p>Товар: @u.Name</p>
+                    <p>Цена: @u.Price</p>
+                    <p>Дата покупки: @u.Date</p>
+
+                    <div name="divThird">
+                        <div name="needHide" id="@u.Id">
+                            <p><a class="btn btn-outline-success mr-3">Редактировать</a></p>
+                        </div>
+
+                        <div class="needHideFirst" name="needShow">
+                            <p><a class="btn btn-outline-primary mr-3" asp-controller="UsersList" asp-action="ChangeUserBuyProduct">Изменить покупку</a></p>
+                            <p><a class="btn btn-outline-danger mr-3" asp-controller="UsersList" asp-action="DeleteUserBuyProduct">Удалить покупку</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+
+<script>
+    $('div[name="main"]').children('div[name="divSecond"]').children('div[name="divThird"]').children('div[name="needHide"]').click(function () {
+
+        $.ajax({
+            url: '@Url.Action("GetIdProductUser", "UsersList")',
+            contentType: "application/json; charset=utf-8",
+            data: { idProductUser: $(this).attr('id') },
+            dataType: "json",
+            success: SuccessShopCart,
+            error: AjaxError
+        })
+
+        $('div[name="main"]').children('div[name="divSecond"]').children('div[name="divThird"]').children('div[name="needHide"]').show();
+        $('div[name="needShow"]').hide();
+
+        $(this).parent().children('div[name="needShow"]').show();
+        $(this).hide();
+    })
+
+    function SuccessShopCart(data) {
+        console.log(data);
+    }
+
+    function AjaxError() {
+        $("body").overhang({
+            type: "error",
+            message: "Что-то пошло не так...",
+            closeConfirm: true
+        });
+    }
+</script>

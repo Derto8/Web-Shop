@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Users>
+
+@{
+    <h1 class="display-4">Пользователи</h1>
+    <p><a class="btn btn-success w-100" asp-controller="UsersList" asp-action="CreateUser">Создать пользователя</a></p>
+    foreach (var u in Model)
+    {
+    <div class="row shadow mb-4 bg-body rounded" name="main">
+        <div class="col-lg-2 mt-3">
+            <img class="img-thumbnail mt-4 ml-3 d-block rounded-circle" src="@u.Image" alt="Изображение отсутсвует" />
+        </div>
+
+        <div class="col m-3" name="divSecond">
+
+            @{
+                if(@u.Status == "Adm")
+                {
+                <p class="text-danger">Администратор</p>
+                }
+            }
+            <p>Логин пользователя: @u.Login</p>
+            <p>ФИО: @u.FIO</p>
+            <p>Телефон: @u.Phone</p>
+            <p>EMail: @u.Email</p>
+
+            @{
+                if(@u.Status == "User"){
+                    <div name="needHide" id="@u.Id">
+                        <p><a class="btn btn-outline-success mr-3">Редактировать</a></p>
+                    </div>
+
+                    <div class="needHideFirst" name="needShow">
+                        <p><a class="btn btn-outline-success mr-3" asp-controller="UsersList" asp-action="ShowBuyProducts">Список покупок пользователя</a></p>
+                        <p><a class="btn btn-outline-primary mr-3" asp-controller="UsersList" asp-action="ChangeUserSettings">Изменить данные пользователя</a></p>
+                        <p><a class="btn btn-outline-danger mr-3" asp-controller="UsersList" asp-action="DeleteUser">Удалить пользователя</a></p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    }
+}
+
+<script>
+    $('div[name="main"]').children('div[name="divSecond"]').children('div[name="needHide"]').click(function () {
+
+        $.ajax({
+            url: '@Url.Action("GetIdUser", "UsersList")',
+            contentType: "application/json; charset=utf-8",
+            data: { idUser: $(this).attr('id') },
+            dataType: "json",
+            success: SuccessShopCart,
+            error: AjaxError
+        })
+
+        $('div[name="main"]').children('div[name="divSecond"]').children('div[name="needHide"]').show();
+        $('div[name="needShow"]').hide();
+
+        $(this).parent().children('div[name="needShow"]').show();
+        $(this).hide();
+    })
+
+    function SuccessShopCart(data) {
+        console.log(data);
+    }
+
+    function AjaxError() {
+        $("body").overhang({
+            type: "error",
+            message: "Что-то пошло не так...",
+            closeConfirm: true
+        });
+    }
+</script>
